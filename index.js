@@ -44,25 +44,15 @@ async function run() {
       res.send(result)
     })
 
+
+    // Task 
+
     app.post("/add_task", async (req, res) => {
       const data = req.body;
       data.features = data.features.split(',' || ' ')
       const result = await projectCollections.insertOne(data);
       res.send(result);
     });
-
-    app.post("/add_skills", async (req, res) => {
-      const data = req.body;
-      const result = await skillsCollections.insertOne(data);
-      res.send(result);
-    });
-
-    app.get('/add_skills', async(req, res) => {
-      const result = await skillsCollections.find().sort({_id: -1}).toArray()
-      res.send(result)
-    })
-
-
 
     app.get("/tasks", async (req, res) => {
       try {
@@ -92,6 +82,38 @@ async function run() {
       const result = await projectCollections.findOne(query);
       res.send(result)
     })
+
+
+    //  skills
+
+    app.post("/add_skills", async (req, res) => {
+      const data = req.body;
+      const result = await skillsCollections.insertOne(data);
+      res.send(result);
+    });
+
+    app.get('/add_skills', async(req, res) => {
+      const result = await skillsCollections.find().sort({_id: -1}).toArray()
+      res.send(result)
+    })
+
+    app.delete('/delete_skills/:id', async(req, res) => {
+      const id =  req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await skillsCollections.deleteOne(query)
+      res.send(result)
+    })
+
+    // app.patch('/update_skills/:id', async(req, res) => {
+    //   const id = req.params.id
+    //   const query = {_id: new ObjectId(id)}
+    //   const result = await skillsCollections.findOne(query)
+    //   console.log(result);
+    // })
+
+
+
+    
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
