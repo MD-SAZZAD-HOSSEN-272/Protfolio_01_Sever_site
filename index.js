@@ -31,6 +31,7 @@ async function run() {
       .db("portfolio_Database")
       .collection("messages");
     const projectCollections = client.db("portfolio_Database").collection("tasks");
+    const skillsCollections = client.db("portfolio_Database").collection("skills");
 
     app.post("/message", async (req, res) => {
       const data = req.body;
@@ -49,6 +50,17 @@ async function run() {
       const result = await projectCollections.insertOne(data);
       res.send(result);
     });
+
+    app.post("/add_skills", async (req, res) => {
+      const data = req.body;
+      const result = await skillsCollections.insertOne(data);
+      res.send(result);
+    });
+
+    app.get('/add_skills', async(req, res) => {
+      const result = await skillsCollections.find().sort({_id: -1}).toArray()
+      res.send(result)
+    })
 
 
 
