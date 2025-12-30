@@ -104,12 +104,22 @@ async function run() {
       res.send(result)
     })
 
-    // app.patch('/update_skills/:id', async(req, res) => {
-    //   const id = req.params.id
-    //   const query = {_id: new ObjectId(id)}
-    //   const result = await skillsCollections.findOne(query)
-    //   console.log(result);
-    // })
+    app.patch('/update_skills/:id', async(req, res) => {
+      const id = req.params.id
+      const updateData = req.body;
+      const query = {_id: new ObjectId(id)}
+      const data = await skillsCollections.findOne(query)
+      const updateDoc = {
+        $set: {
+          skill_designation: updateData.skill_designation,
+          type: updateData.type,
+          icon_image_url: updateData.icon_image_url || data.icon_image_url,
+          level: updateData.level
+        }
+      }
+      const result = await skillsCollections.updateOne(query, updateDoc)
+      res.send(result)
+    })
 
 
 
